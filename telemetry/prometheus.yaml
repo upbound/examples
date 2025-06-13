@@ -1,0 +1,19 @@
+apiVersion: observability.spaces.upbound.io/v1alpha1
+kind: SharedTelemetryConfig
+metadata:
+  name: prometheus
+  namespace: default
+spec:
+  controlPlaneSelector:
+    names:
+    - ctp-caas
+  exportPipeline:
+    logs:
+    - otlphttp
+    metrics:
+    - otlphttp
+    traces:
+    - otlphttp
+  exporters:
+    otlphttp:
+      endpoint: http://lgtm.default.svc.cluster.local:4318

@@ -1,0 +1,19 @@
+apiVersion: observability.spaces.upbound.io/v1alpha1
+kind: SharedTelemetryConfig
+metadata:
+  name: datadog
+  namespace: default
+spec:
+  controlPlaneSelector:
+    names:
+      - ctp-caas
+      - backup-ctp
+  exporters:
+    datadog:
+      api:
+        site: us5.datadoghq.com
+        key: $KEY
+  exportPipeline:
+    metrics: [datadog]
+    traces: [datadog]
+

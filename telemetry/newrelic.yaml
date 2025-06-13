@@ -1,0 +1,19 @@
+apiVersion: observability.spaces.upbound.io/v1alpha1
+kind: SharedTelemetryConfig
+metadata:
+  name: newrelic
+  namespace: default
+spec:
+  controlPlaneSelector:
+    names:
+      - ctp-caas
+      - backup-ctp
+  exporters:
+    otlphttp:
+      endpoint: https://otlp.nr-data.net
+      headers:
+        api-key: $KEY
+  exportPipeline:
+    metrics: [otlphttp]
+    traces: [otlphttp]
+

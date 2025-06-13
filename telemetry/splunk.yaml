@@ -1,0 +1,19 @@
+apiVersion: observability.spaces.upbound.io/v1alpha1
+kind: SharedTelemetryConfig
+metadata:
+  name: prometheus
+  namespace: default
+spec:
+  controlPlaneSelector:
+    names:
+    - ctp-caas
+  exportPipeline:
+    logs:
+    - otlphttp
+  exporters:
+    otlphttp:
+      headers:
+        Authorization: Splunk $KEY
+      logs_endpoint: https://prd-p-6mygs.splunkcloud.com:8088/services/collector/raw
+      tls:
+        insecure_skip_verify: true
