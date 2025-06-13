@@ -1,0 +1,34 @@
+apiVersion: spaces.upbound.io/v1alpha1
+kind: SharedBackupConfig
+metadata:
+  name: default
+  namespace: default
+spec:
+  objectStorage:
+    provider: AWS
+    bucket: backup-bucket-j
+    config:
+      endpoint: s3.us-east-2.amazonaws.com
+      region: us-east-2
+    credentials:
+      source: Secret
+      secretRef:
+        name: aws-secret
+        key: key-file
+---
+
+apiVersion: spaces.upbound.io/v1alpha1
+kind: SharedBackupSchedule
+metadata:
+  name: daily-schedule
+  namespace: default
+spec:
+  schedule: "@daily"
+  configRef:
+    kind: SharedBackupConfig
+    name: default
+  controlPlaneSelector:
+    labelSelectors:
+    - matchLabels:
+        environment: production
+

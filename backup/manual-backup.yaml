@@ -1,0 +1,12 @@
+apiVersion: spaces.upbound.io/v1alpha1
+kind: Backup
+metadata:
+  name: my-backup
+  namespace: default
+spec:
+  configRef:
+    kind: SharedBackupConfig
+    name: default
+  controlPlane: backup-ctp
+  deletionPolicy: Delete
+

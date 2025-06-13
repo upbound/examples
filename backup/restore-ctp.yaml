@@ -1,0 +1,15 @@
+apiVersion: spaces.upbound.io/v1beta1
+kind: ControlPlane
+metadata:
+  labels:
+    environment: production
+  name: backup-ctp
+  namespace: default
+spec:
+  restore:
+    source:
+      kind: Backup
+      name: my-backup
+  crossplane:
+    autoUpgrade:
+      channel: Stable

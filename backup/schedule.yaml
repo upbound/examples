@@ -1,0 +1,14 @@
+apiVersion: spaces.upbound.io/v1alpha1
+kind: SharedBackupSchedule
+metadata:
+  name: daily-schedule
+  namespace: default
+spec:
+  configRef:
+    kind: SharedBackupConfig
+    name: default
+  controlPlaneSelector:
+    labelSelectors:
+      - matchLabels:
+          environment: production
+  schedule: '@daily'
