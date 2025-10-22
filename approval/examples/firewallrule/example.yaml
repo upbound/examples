@@ -1,0 +1,14 @@
+apiVersion: platform.acme.co/v1
+kind: FirewallRule
+metadata:
+  name: example
+  namespace: default
+spec:
+  resources:
+    data:
+      key1: value1
+      key2: value2
+      config: |
+        # Example configuration
+        port: 9080/tcp
+        zone: public
