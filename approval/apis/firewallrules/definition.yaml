@@ -1,0 +1,53 @@
+apiVersion: apiextensions.crossplane.io/v2
+kind: CompositeResourceDefinition
+metadata:
+  name: firewallrules.platform.acme.co
+spec:
+  group: platform.acme.co
+  names:
+    categories:
+    - crossplane
+    kind: FirewallRule
+    plural: firewallrules
+  scope: Namespaced
+  versions:
+  - name: v1
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        description: FirewallRule is the Schema for the FirewallRule API.
+        properties:
+          spec:
+            description: FirewallRuleSpec defines the desired state of FirewallRule.
+            properties:
+              resources:
+                properties:
+                  data:
+                    properties:
+                      config:
+                        type: string
+                      key1:
+                        type: string
+                      key2:
+                        type: string
+                    type: object
+                type: object
+            type: object
+          status:
+            description: FirewallRuleStatus defines the observed state of FirewallRule.
+            type: object
+            properties:
+              approved:
+                description: Whether the current changes are approved
+                type: boolean
+              currentHash:
+                description: Hash of the currently approved resource state
+                type: string
+              resourceStatus:
+                description: Status of the underlying resources
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+        required:
+        - spec
+        type: object
+    served: true

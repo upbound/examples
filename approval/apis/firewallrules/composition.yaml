@@ -1,0 +1,49 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: firewallrules.platform.acme.co
+spec:
+  compositeTypeRef:
+    apiVersion: platform.acme.co/v1
+    kind: FirewallRule
+  mode: Pipeline
+  pipeline:
+  - step: render-resources
+    functionRef:
+      name: crossplane-contrib-function-patch-and-transform
+    input:
+      apiVersion: pt.fn.crossplane.io/v1beta1
+      kind: Resources
+      resources:
+      - name: firewallrule
+        base:
+          apiVersion: nop.crossplane.io/v1alpha1
+          kind: NopResource
+          metadata:
+            name: firewall
+          spec:
+            forProvider:
+              conditionAfter:
+                - conditionStatus: "True"
+                  conditionType: Ready
+                  time: 30s
+              fields: {}
+        patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.resources.data
+          toFieldPath: spec.forProvider.fields.objectField
+          policy:
+            fromFieldPath: Required
+        readinessChecks:
+        - type: None
+  - step: require-approval
+    functionRef:
+      name: upbound-function-approve
+    input:
+      apiVersion: approve.fn.crossplane.io/v1alpha1
+      kind: Input
+      dataField: "spec.resources"
+      approvalField: "status.approved"
+      currentHashField: "status.currentHash"
+      detailedCondition: true
+      approvalMessage: "Changes detected. Administrative approval required."
